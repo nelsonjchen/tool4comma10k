@@ -14,6 +14,8 @@ gooey_root = os.path.dirname(gooey.__file__)
 gooey_languages = Tree(os.path.join(gooey_root, 'languages'), prefix='gooey/languages')
 gooey_images = Tree(os.path.join(gooey_root, 'images'), prefix='gooey/images')
 
+name = 'Tool4Comma10k'
+
 # noinspection PyUnresolvedReferences
 a = Analysis(
     ['server.py'],
@@ -43,7 +45,7 @@ exe = EXE(
     pyz,
     a.scripts,
     exclude_binaries=True,
-    name='server',
+    name=name,
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
@@ -60,11 +62,11 @@ coll = COLLECT(
     strip=False,
     upx=True,
     upx_exclude=[],
-    name='server'
+    name=name
 )
 app = BUNDLE(
     coll,
-    name='Tool4Comma10k.app',
+    name=f'{name}.app',
     icon=None,
     bundle_identifier=None,
     info_plist={
