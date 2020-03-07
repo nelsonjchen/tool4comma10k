@@ -128,6 +128,7 @@ def main():
     tool_paths.local_repo_path = Path(args.comma10k_dir)
     tool_paths.image_paths = sorted(tool_paths.local_repo_path.glob('imgs/*.png'))
 
+    # Debug true causes Gooey to popup. Oh well.
     app.run(debug=False)
 
 
