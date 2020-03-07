@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
+import glob
+import json
+import os
+import subprocess
+
 from flask import Flask, render_template, request, redirect, jsonify, send_from_directory
-import glob, json, subprocess, os
 
 app = Flask(__name__, static_url_path='')
 IMAGES = sorted(glob.glob('../imgs/*.png'))
