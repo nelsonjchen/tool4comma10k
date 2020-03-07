@@ -143,7 +143,7 @@ $("#download").click((evt)=>{
 
 $("#load").click((evt)=>{
     overlayImg = new Image();
-    overlayImg.src = '/static/data/segz/'+img_name;
+    overlayImg.src = '/masks/'+img_name;
     overlayImg.onload = drawAllPaths
     overlayImg.onerror = function(){
         overlayImg = null;

@@ -3,51 +3,44 @@
         {
             "name" : "Empty",
             "id" : 0,
-            "color" : "#fff",
+            "color" : "#ffffff",
             "rgb" : [255,255,255]
         },
         {
-            "name" : "Sky",
-            "id" : 1,
-            "color" : "#f1c40f",
-            "rgb" : [241,196,48]
-            
-        },
-        {
             "name" : "Road",
-            "id" : 2,
-            "color" : "#8e44ad",
-            "rgb" : [142,68,173]
+            "id" : 1,
+            "color" : "#402020",
+            "rgb" : [64,32,32]
         },
         {
             "name" : "Road Marks",
-            "id" : 3,
-            "color" : "#c0392b",
-            "rgb" : [192,57,43]
+            "id" : 2,
+            "color" : "#ff0000",
+            "rgb" : [255,0,0]
         },
         {
             "name" : "Undrivable",
-            "id" : 4,
-            "color" : "#27ae60",
-            "rgb" : [39,174,96]
+            "id" : 3,
+            "color" : "#ccff00",
+            "rgb" : [204, 255, 0]
         },
         {
             "name" : "Movable",
-            "id" : 5,
-            "color" : "#2980b9",
-            "rgb" : [41, 128, 185]
+            "id" : 4,
+            "color" : "#00ff66",
+            "rgb" : [0, 255, 102]
         },
         {
             "name" : "Signs",
-            "id" : 6,
-            "color" : "#95a5a6",
-            "rgb" : [149,165,166]
+            "id" : 5,
+            "color" : "#0066ff",
+            "rgb" : [0, 102, 255]
         },
         {
             "name" : "Ego",
-            "id" : 7,
-            "color" : "#2c3e50",
-            "rgb" : [44,62,80]
+            "id" : 6,
+            "color" : "#cc00ff",
+            "rgb" : [204, 0, 255]
         }
     ]
 }]
