@@ -1,15 +1,14 @@
 #!/usr/bin/env python3
-import glob
 import json
 import os
 import subprocess
 import sys
+from dataclasses import dataclass, field
 from pathlib import Path
+from typing import List
 
 from flask import Flask, render_template, request, redirect, jsonify, send_from_directory
 from gooey import GooeyParser, Gooey
-
-app = Flask(__name__, static_url_path='')
 
 # determine if application is a script file or frozen exe
 if getattr(sys, 'frozen', False):
@@ -17,33 +16,40 @@ if getattr(sys, 'frozen', False):
 elif __file__:
     APPLICATION_PATH = Path(__file__).parent
 
+app = Flask(__name__, static_url_path='', template_folder=APPLICATION_PATH / 'templates')
+
 REPO_URL = 'https://github.com/commaai/comma10k/'
 
 CONFIG = json.load(open('config.json', 'r'))
 
-LOCAL_REPO_PATH = None
-# IMAGES = sorted(glob.glob('../imgs/*.png'))
-IMAGES = []
+
+@dataclass
+class ToolPaths:
+    local_repo_path: Path = None
+    image_paths: List[Path] = field(default_factory=list)
+
+
+tool_paths = ToolPaths()
 
 
 @app.route('/js/<path:path>')
 def send_js(path):
-    return send_from_directory('static', path)
+    return send_from_directory(Path(APPLICATION_PATH) / 'static', path)
 
 
 @app.route('/imgs/<path:path>')
 def send_img(path):
-    return send_from_directory('../imgs', path)
+    return send_from_directory(tool_paths.local_repo_path / 'imgs', path)
 
 
 @app.route('/masks/<path:path>')
 def send_mask(path):
-    return send_from_directory('../masks', path)
+    return send_from_directory(tool_paths.local_repo_path / 'masks', path)
 
 
 @app.route('/css/<path:path>')
 def send_css(path):
-    return send_from_directory('static', path)
+    return send_from_directory(Path(APPLICATION_PATH) / 'static', path)
 
 
 @app.route('/')
@@ -57,10 +63,10 @@ def index():
     img_id = int(request.args.get('id', 0))
     if img_id < 0:
         return redirect("/pencil?id=0")
-    elif img_id >= len(IMAGES):
-        return redirect("/pencil?id=" + str(len(IMAGES) - 1))
-    img_name = Path(IMAGES[img_id]).parts[-1]
-    data = {'total_images': len(IMAGES), 'img_id': img_id, 'img_name': img_name, 'config': CONFIG}
+    elif img_id >= len(tool_paths.image_paths):
+        return redirect("/pencil?id=" + str(len(tool_paths.image_paths) - 1))
+    img_name = tool_paths.image_paths[img_id].parts[-1]
+    data = {'total_images': len(tool_paths.image_paths), 'img_id': img_id, 'img_name': img_name, 'config': CONFIG}
     return render_template("pencil.html", data=data)
 
 
@@ -99,11 +105,28 @@ def hub():
         return jsonify('\n\n', {"out": str(out.decode("utf-8")), "err": str(err.decode("utf-8"))})
 
 
-@Gooey
+@Gooey(
+    program_name="Tool for Comma10k"
+)
 def main():
-    parser = GooeyParser(description="Tool for Comma10k")
-    parser.add_argument('comma10k_dir', widget="DirChooser")
-    parser.parse_args()
+    parser = GooeyParser(
+        description="Utilities and Servers for contributing to the Comma10k dataset",
+    )
+
+    # Assume this is likely to be checked out in a user's Document folder.
+    default_git_repo_location = Path.home() / "Documents" / "comma10k"
+
+    parser.add_argument(
+        '--comma10k_dir',
+        default=str(default_git_repo_location),
+        metavar="Local Comma10k Git Repository Path",
+        widget="DirChooser",
+        required=False,
+    )
+
+    args = parser.parse_args()
+    tool_paths.local_repo_path = Path(args.comma10k_dir)
+    tool_paths.image_paths = sorted(tool_paths.local_repo_path.glob('imgs/*.png'))
 
     app.run(debug=False)
 
