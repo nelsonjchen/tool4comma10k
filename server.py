@@ -3,17 +3,28 @@ import glob
 import json
 import os
 import subprocess
+import sys
+from pathlib import Path
 
 from flask import Flask, render_template, request, redirect, jsonify, send_from_directory
+from gooey import GooeyParser, Gooey
 
 app = Flask(__name__, static_url_path='')
-IMAGES = sorted(glob.glob('../imgs/*.png'))
-config = json.load(open('config.json', 'r'))
+
+# determine if application is a script file or frozen exe
+if getattr(sys, 'frozen', False):
+    APPLICATION_PATH = Path(sys.executable).parent
+elif __file__:
+    APPLICATION_PATH = Path(__file__).parent
 
 REPO_URL = 'https://github.com/commaai/comma10k/'
 
+CONFIG = json.load(open('config.json', 'r'))
 
-# print(config)
+LOCAL_REPO_PATH = None
+# IMAGES = sorted(glob.glob('../imgs/*.png'))
+IMAGES = []
+
 
 @app.route('/js/<path:path>')
 def send_js(path):
@@ -48,8 +59,8 @@ def index():
         return redirect("/pencil?id=0")
     elif img_id >= len(IMAGES):
         return redirect("/pencil?id=" + str(len(IMAGES) - 1))
-    img_name = IMAGES[img_id].split('/')[-1]
-    data = {'total_images': len(IMAGES), 'img_id': img_id, 'img_name': img_name, 'config': config}
+    img_name = Path(IMAGES[img_id]).parts[-1]
+    data = {'total_images': len(IMAGES), 'img_id': img_id, 'img_name': img_name, 'config': CONFIG}
     return render_template("pencil.html", data=data)
 
 
@@ -88,5 +99,14 @@ def hub():
         return jsonify('\n\n', {"out": str(out.decode("utf-8")), "err": str(err.decode("utf-8"))})
 
 
+@Gooey
+def main():
+    parser = GooeyParser(description="Tool for Comma10k")
+    parser.add_argument('comma10k_dir', widget="DirChooser")
+    parser.parse_args()
+
+    app.run(debug=False)
+
+
 if __name__ == "__main__":
-    app.run(debug=True)
+    main()
