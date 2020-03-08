@@ -21,15 +21,19 @@ This is a bit Windows-centric for now.
 
 1. Download a release ZIP from https://github.com/nelsonjchen/tool4comma10k/releases and extract.
 2. Run `Tool4Comma10k.exe` in folder.
-3. Choose a locally cloned `comma10k` Git Repo.
-4. Visit http://localhost:5000 .
-5. LOOP
-    1. TODO: fetch upstream and reset to upstream/master 
-    2. Load existing mask image.
-    3. Fix annotation
-    4. Press Save to Disk
-    5. TODO: Press Checkout new Branch and Commit and Push
-    6. TODO: Automate? Visit GitHub to make Pull request to comma repo
+3. Select the locally cloned `comma10k` Git Repo. By default, the tool will assume you've cloned it to
+    your Documents folder. You will have to do this for every option if you did not clone it to Documents.    
+5. Workflow Loop
+    1. Run `Reset Current To Upstream`
+    2. Run `Run Editor Server`
+        * This will run forever until stopped
+    3. Visit http://localhost:5000     
+    4. Work Work Work for each image number in question.    
+        1. Press Save to Disk
+        1. And then press Commit in the bottom right when mask is good.
+    5. Stop Server in GUI
+    6. Once ready to submit your batch of changes, Run `Create and Push Branch`
+    7. Click the URL to make your pull request
 
 ## Attribution
 
