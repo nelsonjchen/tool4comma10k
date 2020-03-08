@@ -49,6 +49,7 @@ currentCanvasState = ctx.getImageData(0, 0, canvas.width, canvas.height);
 // ON MOUSE DOWN
 
 let isMouseDown = false;
+let lastPosition = null;
 
 let curPath = [];
 let globalPaths = [];
@@ -87,12 +88,17 @@ function mousemove(canvas, evt) {
 
     if (isMouseDown) {
         const currentPosition = getMousePos(canvas, evt, curZoom);
+        if (lastPosition == null) {
+            lastPosition = currentPosition;
+        }
+
         pxBrush.draw({
-            from: currentPosition,
+            from: lastPosition,
             to: currentPosition,
             size: currentSize,
             color: classes[curClass].color,
         });
+        lastPosition = currentPosition
         curPath.push(currentPosition);
     }
 }
@@ -102,6 +108,7 @@ function mousemove(canvas, evt) {
 function mouseup() {
     if (mode === 'brush') {
         isMouseDown = false;
+        lastPosition = null;
         globalPaths.push({path: curPath, className: curClass, color: classes[curClass].color, size: currentSize});
         drawAllPaths();
     }
@@ -118,13 +125,18 @@ function drawAllPaths() {
         const path = pathObj.path;
         const color = pathObj.color;
         const size = pathObj.size;
+        let last_mouse_move_path = null
         path.forEach((mouse_move_path) => {
+            if (last_mouse_move_path == null) {
+                last_mouse_move_path = mouse_move_path
+            }
             pxBrush.draw({
-                from: mouse_move_path,
+                from: last_mouse_move_path,
                 to: mouse_move_path,
                 size: size,
                 color: color,
             });
+            last_mouse_move_path = mouse_move_path;
         });
     });
     currentCanvasState = ctx.getImageData(0, 0, canvas.width, canvas.height);
