@@ -10,6 +10,8 @@ The following major changes have been added:
 * Compiled with PyInstaller for Windows so users don't have to setup a Python development 
   environment to run the tool.
 * "Save to Disk" button to save the mask changes right to the file location of the local comma10k repo.
+* Added functionality in launcher to create and reset a `wip` branch to the latest `master` branch on Comma.ai's repo.
+* Added functionality in launcher to generate a branch, push, and be linked a URL to submit a pull request on the current branch.
 
 ## Usage
 
@@ -17,7 +19,7 @@ This is a bit Windows-centric for now.
 
 ### Annotation
 
-1. Download the ZIP from releases and extract
+1. Download the ZIP from https://github.com/nelsonjchen/tool4comma10k/releases and extract.
 2. Run `Tool4Comma10k.exe` in folder.
 3. Choose a locally cloned `comma10k` Git Repo.
 4. Visit http://localhost:5000 .
