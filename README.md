@@ -1,5 +1,7 @@
 # Tool for [Comma10k][comma10k]
 
+![image](https://user-images.githubusercontent.com/5363/76159582-14b71780-60d7-11ea-86de-9c72bcc5951e.png)
+
 This is the annotation tool extracted out of the [comma10k][comma10k] repository for annotating images.
 
 The following major changes have been added:
