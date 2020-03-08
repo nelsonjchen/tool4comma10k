@@ -118,15 +118,14 @@ function drawAllPaths() {
         const path = pathObj.path;
         const color = pathObj.color;
         const size = pathObj.size;
-        path.forEach((sub_path) => {
+        path.forEach((mouse_move_path) => {
             pxBrush.draw({
-                from: sub_path,
-                to: sub_path,
+                from: mouse_move_path,
+                to: mouse_move_path,
                 size: size,
                 color: color,
             });
         });
-
     });
     currentCanvasState = ctx.getImageData(0, 0, canvas.width, canvas.height);
     console.log(currentCanvasState);

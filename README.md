@@ -14,6 +14,8 @@ The following major changes have been added:
 * "Save to Disk" button to save the mask changes right to the file location of the local comma10k repo.
 * Added functionality in launcher to create and reset a `wip` branch to the latest `master` branch on Comma.ai's repo.
 * Added functionality in launcher to generate a branch, push, and be linked a URL to submit a pull request on the current branch.
+* Majorly replaced path-drawing stuff with [PxBrush][pxbrush]. 
+  This allows drawing without anti-aliasing which is needed.
 
 ## Usage
 
@@ -44,6 +46,8 @@ This is a bit Windows-centric for now.
     * Developed most of the tool. Assuming MIT license per pull request to Comma10k and GitHub TOS. 
 * https://github.com/comma10k/comma10k
     * George tweaked it a bit.
+* https://github.com/kozo002/px-brush
+    * Wrote a guide on drawing on canvas without anti-aliasing. And the library. 
 
 [comma10k]: https://github.com/commaai/comma10k
-
+[pxbrush]: https://github.com/kozo002/px-brush
