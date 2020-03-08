@@ -125,9 +125,28 @@ def main():
         prog="Run Editor Server",
     )
 
+    server_parser.add_argument(
+        '--comma10k_dir',
+        default=str(default_git_repo_location),
+        metavar="Local Comma10k Git Repository Path",
+        widget="DirChooser",
+        help="The Editor Server will operate on this repository",
+        required=False,
+    )
+
     fetch_reset_parser = subparsers.add_parser(
         'fetch_reset',
         prog='Reset Current to Upstream',
+    )
+
+    fetch_reset_parser.add_argument(
+        '--comma10k_dir',
+        default=str(default_git_repo_location),
+        metavar="Local Comma10k Git Repository Path",
+        widget="DirChooser",
+        help="The tool will create (and overwrite if needed) and checkout a branch called 'wip' that has the latest "
+             "changes from comma.ai's comma10k repo.",
+        required=False,
     )
 
     create_push_parser = subparsers.add_parser(
@@ -135,14 +154,15 @@ def main():
         prog="Create and Push Branch"
     )
 
-    for subparser in [server_parser, fetch_reset_parser, create_push_parser]:
-        subparser.add_argument(
-            '--comma10k_dir',
-            default=str(default_git_repo_location),
-            metavar="Local Comma10k Git Repository Path",
-            widget="DirChooser",
-            required=False,
-        )
+    create_push_parser.add_argument(
+        '--comma10k_dir',
+        default=str(default_git_repo_location),
+        metavar="Local Comma10k Git Repository Path",
+        widget="DirChooser",
+        help="The tool will create a new branch from the current branch with a unique name and push it to your fork. "
+             "It will then give you a link to submit a pull request to comma.ai to the new branch.",
+        required=False,
+    )
 
     args = parser.parse_args()
 

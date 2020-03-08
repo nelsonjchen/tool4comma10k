@@ -23,8 +23,9 @@ This is a bit Windows-centric for now.
 
 1. Download a release ZIP from https://github.com/nelsonjchen/tool4comma10k/releases and extract.
 2. Run `Tool4Comma10k.exe` in folder.
-3. Select the locally cloned `comma10k` Git Repo. By default, the tool will assume you've cloned it to
-    your Documents folder. You will have to do this for every option if you did not clone it to Documents.    
+3. `git clone` your **fork** of the `comma10k` git repo to your Documents folder. 
+    By default, the tool will assume you've cloned it to
+    your Documents folder but this can be changed on every run, though not persistently.     
 5. Workflow Loop
     1. Run `Reset Current To Upstream`
     2. Run `Run Editor Server`
@@ -35,7 +36,7 @@ This is a bit Windows-centric for now.
         1. And then press Commit in the bottom right when mask is good.
     5. Stop Server in GUI
     6. Once ready to submit your batch of changes, Run `Create and Push Branch`
-    7. Click the URL to make your pull request
+    7. Click the URL to fill out and make your pull request.
 
 ## Attribution
 
