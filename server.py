@@ -20,6 +20,7 @@ else:
     APPLICATION_PATH = Path(__file__).parent
 
 app = Flask(__name__, static_url_path='', template_folder=APPLICATION_PATH / 'templates')
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
 REPO_URL = 'https://github.com/commaai/comma10k/'
 
