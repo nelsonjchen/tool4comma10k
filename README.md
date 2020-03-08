@@ -19,7 +19,7 @@ This is a bit Windows-centric for now.
 
 ### Annotation
 
-1. Download the ZIP from https://github.com/nelsonjchen/tool4comma10k/releases and extract.
+1. Download a release ZIP from https://github.com/nelsonjchen/tool4comma10k/releases and extract.
 2. Run `Tool4Comma10k.exe` in folder.
 3. Choose a locally cloned `comma10k` Git Repo.
 4. Visit http://localhost:5000 .
