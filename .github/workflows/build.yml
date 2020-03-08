@@ -1,7 +1,13 @@
 name: Tool for Comma10k
 
 # Trigger the workflow on push or pull request
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - *
+    tags:
+      - v*
+  pull_request:
 
 jobs:
   build:
