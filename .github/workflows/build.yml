@@ -15,8 +15,32 @@ jobs:
       - run: pip install -r requirements.txt
       - run: pip install pyinstaller
       - run: pyinstaller -y server.spec
+      - name: Archive Dist
+        run: 7z a -mx9 dist.zip dist
       - name: Archive Server Dist
         uses: actions/upload-artifact@v1
         with:
           name: dist
-          path: dist
+          path: dist.zip
+      - name: Create Release
+        if: github.event_name == 'release'
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+      - name: Upload Release Asset
+        if: github.event_name == 'release'
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
+          asset_path: ./dist.zip
+          asset_name: tool4comma10k.zip
+          asset_content_type: application/zip
