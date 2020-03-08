@@ -141,6 +141,15 @@ $("#download").click((evt)=>{
   link.click();
 })
 
+$("#save_to_disk").click((evt) => {
+    drawAllPaths();
+    var image = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+    var data = new FormData();
+
+    $.post('/masks/' + img_name, {image: image}).done(function (data) {
+    });
+})
+
 $("#load").click((evt)=>{
     overlayImg = new Image();
     overlayImg.src = '/masks/'+img_name;

@@ -6,11 +6,14 @@ import sys
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import List
+from urllib.request import urlopen
 
 from flask import Flask, render_template, request, redirect, jsonify, send_from_directory
 from gooey import GooeyParser, Gooey
 
 # determine if application is a script file or frozen exe
+from werkzeug.utils import secure_filename
+
 if getattr(sys, 'frozen', False):
     APPLICATION_PATH = Path(sys.executable).parent
 elif __file__:
@@ -42,9 +45,16 @@ def send_img(path):
     return send_from_directory(tool_paths.local_repo_path / 'imgs', path)
 
 
-@app.route('/masks/<path:path>')
+@app.route('/masks/<path:path>', methods=['GET', 'POST'])
 def send_mask(path):
-    return send_from_directory(tool_paths.local_repo_path / 'masks', path)
+    if request.method == 'POST':
+        with urlopen(request.form['image']) as response:
+            data = response.read()
+            with open(tool_paths.local_repo_path / 'masks' / path, 'wb') as f:
+                f.write(data)
+        return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
+    elif request.method == 'GET':
+        return send_from_directory(tool_paths.local_repo_path / 'masks', path)
 
 
 @app.route('/css/<path:path>')
