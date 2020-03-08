@@ -15,9 +15,8 @@ jobs:
       - run: pip install -r requirements.txt
       - run: pip install pyinstaller
       - run: pyinstaller -y server.spec
-        working-directory: pencil
       - name: Archive Server Dist
         uses: actions/upload-artifact@v1
         with:
           name: dist
-          path: pencil/dist
+          path: dist
