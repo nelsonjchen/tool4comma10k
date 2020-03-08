@@ -11,8 +11,11 @@ from urllib.request import urlopen
 from flask import Flask, render_template, request, redirect, jsonify, send_from_directory
 from gooey import GooeyParser, Gooey
 
-# determine if application is a script file or frozen exe
-from werkzeug.utils import secure_filename
+try:
+    import _version
+    software_version = _version.software
+except:
+    software_version = 'develop'
 
 if getattr(sys, 'frozen', False):
     APPLICATION_PATH = Path(sys.executable).parent
@@ -78,6 +81,7 @@ def index():
         return redirect("/pencil?id=" + str(len(tool_paths.image_paths) - 1))
     img_name = tool_paths.image_paths[img_id].parts[-1]
     data = {
+        'software_version': software_version,
         'total_images': len(tool_paths.image_paths),
         'img_id': img_id,
         'img_name': img_name,
