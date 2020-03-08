@@ -16,7 +16,7 @@ from werkzeug.utils import secure_filename
 
 if getattr(sys, 'frozen', False):
     APPLICATION_PATH = Path(sys.executable).parent
-elif __file__:
+else:
     APPLICATION_PATH = Path(__file__).parent
 
 app = Flask(__name__, static_url_path='', template_folder=APPLICATION_PATH / 'templates')
