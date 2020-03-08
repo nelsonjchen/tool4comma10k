@@ -24,6 +24,7 @@ a = Analysis(
     datas=[
         ('static', 'static'),
         ('templates', 'templates'),
+        ('config.json', '.'),
     ],
     hiddenimports=[
         'pkg_resources.py2_warn'

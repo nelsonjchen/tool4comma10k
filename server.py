@@ -24,7 +24,7 @@ app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
 REPO_URL = 'https://github.com/commaai/comma10k/'
 
-CONFIG = json.load(open('config.json', 'r'))
+CONFIG = json.load(open(APPLICATION_PATH / 'config.json', 'r'))
 
 
 @dataclass
@@ -77,7 +77,12 @@ def index():
     elif img_id >= len(tool_paths.image_paths):
         return redirect("/pencil?id=" + str(len(tool_paths.image_paths) - 1))
     img_name = tool_paths.image_paths[img_id].parts[-1]
-    data = {'total_images': len(tool_paths.image_paths), 'img_id': img_id, 'img_name': img_name, 'config': CONFIG}
+    data = {
+        'total_images': len(tool_paths.image_paths),
+        'img_id': img_id,
+        'img_name': img_name,
+        'config': CONFIG
+    }
     return render_template("pencil.html", data=data)
 
 
