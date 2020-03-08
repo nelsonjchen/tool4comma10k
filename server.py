@@ -11,10 +11,14 @@ from urllib.request import urlopen
 from flask import Flask, render_template, request, redirect, jsonify, send_from_directory
 from gooey import GooeyParser, Gooey
 
+from repo_operations import commit_with_message
+
+# noinspection PyBroadException
 try:
     import _version
+
     software_version = _version.software
-except:
+except Exception:
     software_version = 'develop'
 
 if getattr(sys, 'frozen', False):
@@ -97,32 +101,9 @@ def hub():
     if img_name == '':
         return jsonify({"out": "no-file", "err": ""})
     else:
-        file_location = 'masks/' + img_name
-        print(file_location, os.path.exists(file_location))
-        process = subprocess.Popen(['git', 'status'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        out, err = process.communicate()
-        if img_name in out.decode("utf-8"):
-            process = subprocess.Popen(['git', 'add', file_location], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            out, err = process.communicate()
-            print('\n\n', {"out": str(out.decode("utf-8")), "err": str(err.decode("utf-8"))})
+        commit_with_message(tool_paths.local_repo_path, img_name)
 
-            process = subprocess.Popen(
-                ['git', 'commit', '-m', '" add mask : ' + REPO_URL + 'blob/master/imgs/' + img_name + '"'],
-                stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            out, err = process.communicate()
-            print('\n\n', {"out": str(out.decode("utf-8")), "err": str(err.decode("utf-8"))})
-
-            process = subprocess.Popen(['git', 'push'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            out, err = process.communicate()
-            print('\n\n', {"out": str(out.decode("utf-8")), "err": str(err.decode("utf-8"))})
-
-            process = subprocess.Popen(
-                ['hub', 'pull-request', '-m', '" add mask : ' + REPO_URL + 'blob/master/imgs/' + img_name + '"'],
-                stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            out, err = process.communicate()
-            print({"out": str(out.decode("utf-8")), "err": str(err.decode("utf-8"))})
-        # print({"out":str(out.decode("utf-8")), "err": str(err.decode("utf-8") )})
-        return jsonify('\n\n', {"out": str(out.decode("utf-8")), "err": str(err.decode("utf-8"))})
+        return jsonify('\n\n', {"out": 'OK', "err": ''})
 
 
 @Gooey(
