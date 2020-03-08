@@ -27,7 +27,7 @@ jobs:
       - run: pip install pyinstaller
       - run: pyinstaller -y server.spec
       - name: Archive Dist
-        run: 7z a -mx9 dist.zip dist
+        run: 7z a -mx9 dist.zip .\dist\Tool4Comma10k\*
       - name: Archive Server Dist
         uses: actions/upload-artifact@v1
         with:
