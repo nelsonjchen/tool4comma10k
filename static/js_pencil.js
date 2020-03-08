@@ -1,13 +1,13 @@
-var canvas = document.getElementById('main-canvas');
-var ctx = canvas.getContext('2d');
-var currentSize = 10;
-var curZoom = 1;
-var curClass = 0;
+const canvas = document.getElementById('main-canvas');
+const ctx = canvas.getContext('2d');
+let currentSize = 10;
+let curZoom = 1;
+let curClass = 0;
 
-var classes = config.classes
-var currentCanvasState;
+const classes = config.classes;
+let currentCanvasState;
 
-var mode = 'brush';
+let mode = 'brush';
 
 console.log(classes);
 
@@ -25,7 +25,7 @@ $(".c-p-div").click((evt)=>{
 })
 
 function getMousePos(canvas, evt, zoom) {
-    var rect = canvas.getBoundingClientRect();
+    const rect = canvas.getBoundingClientRect();
     // console.log(evt.clientX, evt.clientY, rect, evt);
     return {
         x: (evt.clientX - rect.left)/zoom,
@@ -41,10 +41,10 @@ ctx.fillRect(0,0,canvas.width, canvas.height);
 currentCanvasState = ctx.getImageData(0, 0, canvas.width, canvas.height);
 // ON MOUSE DOWN
 
-var isMouseDown = false;
-var curPath = [];
-var globalPaths = [];
-var overlayImg = null;
+let isMouseDown = false;
+let curPath = [];
+let globalPaths = [];
+let overlayImg = null;
 
 function mousedown(canvas, evt) {
     if (mode==='brush'){
@@ -73,7 +73,7 @@ function mousedown(canvas, evt) {
 function mousemove(canvas, evt) {
 
     if(isMouseDown){
-        var currentPosition = getMousePos(canvas, evt, curZoom);
+        const currentPosition = getMousePos(canvas, evt, curZoom);
         ctx.lineTo(currentPosition.x, currentPosition.y)
         ctx.stroke();
         curPath.push([currentPosition.x, currentPosition.y]);
@@ -99,10 +99,10 @@ function drawAllPaths(){
         ctx.drawImage(overlayImg,0,0);
     }
     globalPaths.forEach((pathObj)=>{
-        var path = pathObj.path;
-        var className = pathObj.className;
-        var color = pathObj.color;
-        var size = pathObj.size;
+        const path = pathObj.path;
+        const className = pathObj.className;
+        const color = pathObj.color;
+        const size = pathObj.size;
         ctx.beginPath()
         ctx.moveTo(path[0][0],path[0][1]);
         path.forEach((pt)=>{
@@ -134,17 +134,17 @@ $('#undo').click(()=>{
 
 $("#download").click((evt)=>{
     drawAllPaths();
-    var image = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
-    var link = document.createElement('a');
-  link.download = img_name;
+    const image = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+    const link = document.createElement('a');
+    link.download = img_name;
   link.href = image;
   link.click();
 })
 
 $("#save_to_disk").click((evt) => {
     drawAllPaths();
-    var image = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
-    var data = new FormData();
+    const image = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+    const data = new FormData();
 
     $.post('/masks/' + img_name, {image: image}).done(function (data) {
     });
@@ -204,7 +204,7 @@ $('#next').click(()=>{
 
 
 $('#go-to-button').click(()=>{
-    var togoto = $('#go-to').val()
+    const togoto = $('#go-to').val();
     window.location.href = '/pencil?id='+togoto;
 })
 
