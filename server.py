@@ -11,7 +11,7 @@ from urllib.request import urlopen
 from flask import Flask, render_template, request, redirect, jsonify, send_from_directory
 from gooey import GooeyParser, Gooey
 
-from repo_operations import commit_with_message
+from repo_operations import commit_with_message, fetch_reset_new_branch_upstream, create_push_pr_able_branch
 
 # noinspection PyBroadException
 try:
@@ -107,7 +107,8 @@ def hub():
 
 
 @Gooey(
-    program_name="Tool for Comma10k"
+    program_name="Tool for Comma10k",
+    optional_cols=2,
 )
 def main():
     parser = GooeyParser(
@@ -117,20 +118,44 @@ def main():
     # Assume this is likely to be checked out in a user's Document folder.
     default_git_repo_location = Path.home() / "Documents" / "comma10k"
 
-    parser.add_argument(
-        '--comma10k_dir',
-        default=str(default_git_repo_location),
-        metavar="Local Comma10k Git Repository Path",
-        widget="DirChooser",
-        required=False,
+    subparsers = parser.add_subparsers(help='commands', dest='command', required=True)
+
+    server_parser = subparsers.add_parser(
+        'server',
+        prog="Run Editor Server",
     )
 
+    fetch_reset_parser = subparsers.add_parser(
+        'fetch_reset',
+        prog='Reset Current to Upstream',
+    )
+
+    create_push_parser = subparsers.add_parser(
+        'create_push',
+        prog="Create and Push Branch"
+    )
+
+    for subparser in [server_parser, fetch_reset_parser, create_push_parser]:
+        subparser.add_argument(
+            '--comma10k_dir',
+            default=str(default_git_repo_location),
+            metavar="Local Comma10k Git Repository Path",
+            widget="DirChooser",
+            required=False,
+        )
+
     args = parser.parse_args()
+
     tool_paths.local_repo_path = Path(args.comma10k_dir)
     tool_paths.image_paths = sorted(tool_paths.local_repo_path.glob('imgs/*.png'))
 
-    # Debug true causes Gooey to popup. Oh well.
-    app.run(debug=False)
+    if args.command == 'server':
+        # Debug true causes Gooey to popup. Oh well.
+        app.run(debug=False)
+    elif args.command == 'fetch_reset':
+        fetch_reset_new_branch_upstream(tool_paths.local_repo_path)
+    elif args.command == 'create_push':
+        create_push_pr_able_branch(tool_paths.local_repo_path)
 
 
 if __name__ == "__main__":

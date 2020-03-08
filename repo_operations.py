@@ -8,6 +8,7 @@ from git import Repo
 
 
 def fetch_reset_new_branch_upstream(repo_path: Path):
+    print("* Starting to fetch from Comma Repo")
     repo = Repo(repo_path)
     # Force upstream to be comma10k repo
     if 'upstream' not in repo.remotes:
@@ -16,14 +17,17 @@ def fetch_reset_new_branch_upstream(repo_path: Path):
     repo.remotes['upstream'].fetch()
     # Delete existing wip branch, if any
     if repo.active_branch.name == 'wip':
+
         # Set wip --hard to upstream/master
         repo.git.reset('--hard', 'upstream/master')
     else:
         head = repo.create_head('wip', 'upstream/master', force=True)
         head.checkout(force=True)
+    print("* 'wip' branch reset/checked out to Comma AI upstream/master. Ready for more work!")
 
 
 def create_push_pr_able_branch(repo_path: Path):
+    print("* Starting to create new branch from current branch")
     repo = Repo(repo_path)
     # Generate a branch name, just use the date for now?
     time_string = datetime.now().strftime("%Y%m%d%H%M%S")
@@ -35,7 +39,7 @@ def create_push_pr_able_branch(repo_path: Path):
     github_user = urlparse(repo.remotes['origin'].url).path.split('/')[1]
     pull_request_url = \
         f"https://github.com/commaai/comma10k/compare/master...{github_user}:{branch_name}?expand=1"
-    print(f"Create Pull Request URL: {pull_request_url}")
+    print(f"* Branch made and pushed! Create Pull Request URL: {pull_request_url}")
     return pull_request_url
 
 
@@ -45,7 +49,7 @@ def commit_with_message(repo_path: Path, img_name: str):
     changed_files = [item.a_path for item in repo.index.diff(None)]
     if masked_name not in changed_files:
         return
-    mask_number = re.search(r'masks/(\d+)_', masked_name)[1]
+    mask_number = re.search(r"masks/(\d+)_", masked_name)[1]
     commit_message = f"{mask_number} - Update Mask"
     repo.git.commit('--all', '-m', commit_message)
 
