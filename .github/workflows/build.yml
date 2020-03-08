@@ -4,11 +4,13 @@ name: Tool for Comma10k
 on:
   push:
     branches:
-      - *
+      - '*'
     tags:
-      - v*
+      - 'v*'
   pull_request:
-
+    branches:
+      - '*'
+      -
 jobs:
   build:
     runs-on: windows-latest
