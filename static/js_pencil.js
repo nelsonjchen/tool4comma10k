@@ -22,7 +22,7 @@ $(".c-p-div").click((evt)=>{
     $(".c-p-div").css({"border":"none","background":"#eee"});
     $(evt.target).css({"border":"1px #333 solid", "background":"#aaa"});
     curClass = parseInt($(evt.target).data("class").split('-')[1]);
-})
+});
 
 function getMousePos(canvas, evt, zoom) {
     const rect = canvas.getBoundingClientRect();
@@ -50,8 +50,8 @@ function mousedown(canvas, evt) {
     if (mode==='brush'){
         isMouseDown=true;
         var currentPosition = getMousePos(canvas, evt, curZoom);
-        curPath = [[currentPosition.x, currentPosition.y]]
-        ctx.moveTo(currentPosition.x, currentPosition.y)
+        curPath = [[currentPosition.x, currentPosition.y]];
+        ctx.moveTo(currentPosition.x, currentPosition.y);
         ctx.beginPath();
         ctx.lineWidth  = currentSize;
         ctx.lineCap = "round";
@@ -74,7 +74,7 @@ function mousemove(canvas, evt) {
 
     if(isMouseDown){
         const currentPosition = getMousePos(canvas, evt, curZoom);
-        ctx.lineTo(currentPosition.x, currentPosition.y)
+        ctx.lineTo(currentPosition.x, currentPosition.y);
         ctx.stroke();
         curPath.push([currentPosition.x, currentPosition.y]);
     }
@@ -85,7 +85,7 @@ function mousemove(canvas, evt) {
 function mouseup() {
     if (mode==='brush'){
         
-        isMouseDown=false
+        isMouseDown=false;
         globalPaths.push({path:curPath,className:curClass,color:classes[curClass].color, size:currentSize});
         drawAllPaths();
     }
@@ -103,18 +103,18 @@ function drawAllPaths(){
         const className = pathObj.className;
         const color = pathObj.color;
         const size = pathObj.size;
-        ctx.beginPath()
+        ctx.beginPath();
         ctx.moveTo(path[0][0],path[0][1]);
         path.forEach((pt)=>{
             ctx.lineTo(pt[0],pt[1]);    
-        })
+        });
         // ctx.closePath();
         ctx.lineWidth = size;
         ctx.strokeStyle = color;
         ctx.fillStyle = color;
         ctx.stroke();
         ctx.fill();
-    })
+    });
     currentCanvasState = ctx.getImageData(0, 0, canvas.width, canvas.height);
     console.log(currentCanvasState);
     
@@ -129,7 +129,7 @@ canvas.addEventListener('mouseup',mouseup);
 $('#undo').click(()=>{
     globalPaths.pop();
     drawAllPaths();
-})
+});
 
 
 $("#download").click((evt)=>{
@@ -139,7 +139,7 @@ $("#download").click((evt)=>{
     link.download = img_name;
   link.href = image;
   link.click();
-})
+});
 
 $("#save_to_disk").click((evt) => {
     drawAllPaths();
@@ -148,22 +148,22 @@ $("#save_to_disk").click((evt) => {
 
     $.post('/masks/' + img_name, {image: image}).done(function (data) {
     });
-})
+});
 
 $("#load").click((evt)=>{
     overlayImg = new Image();
     overlayImg.src = '/masks/'+img_name + '?' + Date.now();
-    overlayImg.onload = drawAllPaths
+    overlayImg.onload = drawAllPaths;
     overlayImg.onerror = function(){
         overlayImg = null;
     }
-})
+});
 
 $('#clear').click(()=>{
     overlayImg = null;
     globalPaths = [];
     drawAllPaths();
-})
+});
 
 $(document).on('input', '#myRange', function() {
     // console.log($(this).val());
@@ -195,31 +195,31 @@ $(document).on('input', '#myRangeZoom', function() {
 
 $('#previous').click(()=>{
     window.location.href = '/pencil?id='+(parseInt(img_id)-1)
-})
+});
 
 $('#next').click(()=>{
     window.location.href = '/pencil?id='+(parseInt(img_id)+1)
-})
+});
 
 
 
 $('#go-to-button').click(()=>{
     const togoto = $('#go-to').val();
     window.location.href = '/pencil?id='+togoto;
-})
+});
 
 $('#brush').click((evt)=>{
     mode = 'brush';
     $('.modes').removeClass("active");
     $(evt.target).addClass("active");
 
-})
+});
 
 $('#fill').click((evt)=>{
     mode = 'fill';
     $('.modes').removeClass("active");
     $(evt.target).addClass("active");
-})
+});
 
 
 $('#commit').click(()=>{
@@ -232,5 +232,5 @@ $('#commit').click(()=>{
       });
       
       
-})
+});
 
