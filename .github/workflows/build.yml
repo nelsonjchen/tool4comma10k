@@ -8,6 +8,7 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
+        fetch-depth: 0
       - name: Set up Python
         uses: actions/setup-python@v1
         with:
