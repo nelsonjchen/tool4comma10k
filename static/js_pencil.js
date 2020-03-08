@@ -152,7 +152,7 @@ $("#save_to_disk").click((evt) => {
 
 $("#load").click((evt)=>{
     overlayImg = new Image();
-    overlayImg.src = '/masks/'+img_name;
+    overlayImg.src = '/masks/'+img_name + '?' + Date.now();
     overlayImg.onload = drawAllPaths
     overlayImg.onerror = function(){
         overlayImg = null;
