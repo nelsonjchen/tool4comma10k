@@ -65,13 +65,12 @@ function mousedown(canvas, evt) {
             size: currentSize,
             color: classes[curClass].color,
         });
-        // curPath = [[currentPosition.x, currentPosition.y]];
-        // ctx.moveTo(currentPosition.x, currentPosition.y);
-        // ctx.beginPath();
-        // ctx.lineWidth  = currentSize;
-        // ctx.lineCap = "round";
-        // ctx.strokeStyle = classes[curClass].color;
-        // ctx.fillStyle = classes[curClass].color;
+        curPath = [
+            {
+                x: currentPosition.x,
+                y: currentPosition.y
+            }
+        ];
     } else if (mode === 'fill') {
         currentPosition = getMousePos(canvas, evt, curZoom);
         ctx.fillStyle = classes[curClass].color;
@@ -88,15 +87,13 @@ function mousemove(canvas, evt) {
 
     if (isMouseDown) {
         const currentPosition = getMousePos(canvas, evt, curZoom);
-                pxBrush.draw({
+        pxBrush.draw({
             from: currentPosition,
             to: currentPosition,
             size: currentSize,
             color: classes[curClass].color,
         });
-        // ctx.lineTo(currentPosition.x, currentPosition.y);
-        // ctx.stroke();
-        // curPath.push([currentPosition.x, currentPosition.y]);
+        curPath.push(currentPosition);
     }
 }
 
@@ -104,40 +101,35 @@ function mousemove(canvas, evt) {
 
 function mouseup() {
     if (mode === 'brush') {
-
         isMouseDown = false;
-        // globalPaths.push({path: curPath, className: curClass, color: classes[curClass].color, size: currentSize});
+        globalPaths.push({path: curPath, className: curClass, color: classes[curClass].color, size: currentSize});
         drawAllPaths();
     }
 }
 
 function drawAllPaths() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = '#fff';
+    ctx.fillStyle = '#ffffff';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     if (overlayImg !== null) {
         ctx.drawImage(overlayImg, 0, 0);
     }
     globalPaths.forEach((pathObj) => {
         const path = pathObj.path;
-        const className = pathObj.className;
         const color = pathObj.color;
         const size = pathObj.size;
-        ctx.beginPath();
-        ctx.moveTo(path[0][0], path[0][1]);
-        path.forEach((pt) => {
-            ctx.lineTo(pt[0], pt[1]);
+        path.forEach((sub_path) => {
+            pxBrush.draw({
+                from: sub_path,
+                to: sub_path,
+                size: size,
+                color: color,
+            });
         });
-        // ctx.closePath();
-        ctx.lineWidth = size;
-        ctx.strokeStyle = color;
-        ctx.fillStyle = color;
-        ctx.stroke();
-        ctx.fill();
+
     });
     currentCanvasState = ctx.getImageData(0, 0, canvas.width, canvas.height);
     console.log(currentCanvasState);
-
 }
 
 
