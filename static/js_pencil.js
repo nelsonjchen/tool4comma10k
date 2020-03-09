@@ -51,14 +51,13 @@ currentCanvasState = ctx.getImageData(0, 0, canvas.width, canvas.height);
 let isMouseDown = false;
 let lastPosition = null;
 
-let curPath = [];
+let curDrawCommands = [];
 let globalPaths = [];
 let overlayImg = null;
 
 function mousedown(canvas, evt) {
-    let currentPosition = getMousePos(canvas, evt, curZoom);
-
     if (mode === 'brush') {
+        let currentPosition = getMousePos(canvas, evt, curZoom);
         isMouseDown = true;
         pxBrush.draw({
             from: currentPosition,
@@ -66,14 +65,15 @@ function mousedown(canvas, evt) {
             size: currentSize,
             color: classes[curClass].color,
         });
-        curPath = [
+        console.log("Reset Command Buffer");
+        curDrawCommands = [
             {
-                x: currentPosition.x,
-                y: currentPosition.y
+                from: currentPosition,
+                to: currentPosition,
             }
         ];
     } else if (mode === 'fill') {
-        currentPosition = getMousePos(canvas, evt, curZoom);
+        let currentPosition = getMousePos(canvas, evt, curZoom);
         ctx.fillStyle = classes[curClass].color;
         ctx.fillFlood(currentPosition.x, currentPosition.y, 10);
 
@@ -98,8 +98,13 @@ function mousemove(canvas, evt) {
             size: currentSize,
             color: classes[curClass].color,
         });
-        lastPosition = currentPosition
-        curPath.push(currentPosition);
+        curDrawCommands.push(
+            {
+                from: lastPosition,
+                to: currentPosition,
+            }
+        );
+        lastPosition = currentPosition;
     }
 }
 
@@ -109,7 +114,14 @@ function mouseup() {
     if (mode === 'brush') {
         isMouseDown = false;
         lastPosition = null;
-        globalPaths.push({path: curPath, className: curClass, color: classes[curClass].color, size: currentSize});
+        globalPaths.push(
+            {
+                draw_commands: curDrawCommands,
+                className: curClass,
+                color: classes[curClass].color,
+                size: currentSize
+            }
+        );
         drawAllPaths();
     }
 }
@@ -122,22 +134,20 @@ function drawAllPaths() {
         ctx.drawImage(overlayImg, 0, 0);
     }
     globalPaths.forEach((pathObj) => {
-        const path = pathObj.path;
+        const draw_commands = pathObj.draw_commands;
         const color = pathObj.color;
         const size = pathObj.size;
-        let last_mouse_move_path = null
-        path.forEach((mouse_move_path) => {
-            if (last_mouse_move_path == null) {
-                last_mouse_move_path = mouse_move_path
-            }
+        let draw_count = 0;
+        draw_commands.forEach((draw_command) => {
             pxBrush.draw({
-                from: last_mouse_move_path,
-                to: mouse_move_path,
+                from: draw_command.from,
+                to: draw_command.to,
                 size: size,
                 color: color,
             });
-            last_mouse_move_path = mouse_move_path;
+            draw_count += 1;
         });
+        console.log(`Drawn pxBrush ${draw_count} times`);
     });
     currentCanvasState = ctx.getImageData(0, 0, canvas.width, canvas.height);
     console.log(currentCanvasState);
@@ -160,7 +170,8 @@ $('#undo').click(() => {
 
 
 $("#download").click((evt) => {
-    drawAllPaths();
+    window.requestAnimationFrame(drawAllPaths);
+    console.log("Generating download");
     const image = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
     const link = document.createElement('a');
     link.download = img_name;
@@ -169,7 +180,7 @@ $("#download").click((evt) => {
 });
 
 $("#save_to_disk").click((evt) => {
-    drawAllPaths();
+    window.requestAnimationFrame(drawAllPaths);
     const image = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
     const data = new FormData();
 
