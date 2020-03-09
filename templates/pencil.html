@@ -34,10 +34,8 @@
                     </div>
                 <div id="toolbar">
                         <div class="pencils" id="pencils1">
-                            <p>Classes</p>
                         </div>
                         <div class="pencils">
-                                <p>Toolbar</p>
                                 <button class="btn btn-outline-primary"  id="load">Load Existing Mask</button>
                                 <button class="btn btn-outline-warning" id="undo">Undo</button>
                                 <button class="btn btn-outline-danger"  id="clear">Clear All</button>
@@ -48,17 +46,15 @@
                                 <div style="display:flex;flex-direction: row; align-items: stretch; justify-content: space-around; margin: 10px">
                                         <button class="btn btn-outline-light modes active"  id="brush">Brush</button>
                                         <button class="btn btn-outline-light modes"  id="fill">Flood Fill</button>
-                                        
                                 </div>
                         </div>
                                 <div class="pencils">
-                                        <label>Pencil Properties</label>
                                 <label>Brush Size : <span id="brush-size">10</span></label>
                                 <input type="range" min="1" max="20" value="10" class="slider" id="myRange">
                                 <label>Overlay Opacity : <span id="overlay-opacity">0.5</span></label>
                                 <input type="range" min="0" max="10" value="5" class="slider" id="myRangeOpacity">
                                 <label>Zoom Level : <span id="overlay-zoom">1</span></label>
-                                <input type="range" min="1" max="5" value="1" class="slider" id="myRangeZoom">
+                                <input type="range" min="1" step="0.01" max="5" value="1" class="slider" id="myRangeZoom">
                                 <br>
                             </div>
                             <div class="pencils">

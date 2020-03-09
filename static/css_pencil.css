@@ -21,6 +21,7 @@ body{
     opacity: 0.5;
     position: absolute;
     cursor: crosshair;
+    transform-origin: top left;
 }
 
 .screen{
@@ -40,6 +41,7 @@ body{
 } */
 
 #main-img{
+    transform-origin: top left;
     position: absolute;
 }
 
