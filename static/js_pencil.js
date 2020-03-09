@@ -17,7 +17,9 @@ console.log(classes);
 
 classes.forEach((col, i) => {
     console.log(col, i);
-    $("#pencils1").append("<div data-class='pencil-" + col['id'] + "' class='c-p-div btn-outline-secondary'><p class='c-p-text'>" + col['name'] + "</p><div class='color-pencil' style='background:" + col['color'] + "'></div></div>");
+    $("#pencils1").append(
+        `<div id='pencil-color-${col['id']}' data-class='pencil-${col['id']}' class='c-p-div btn-outline-secondary'><p class='c-p-text'>${col['name']}</p><div class='color-pencil' style='background:${col['color']}'></div></div>`
+    );
 });
 
 
@@ -269,5 +271,75 @@ $('#commit').click(() => {
     });
 
 
+});
+
+// KEYBOARD SHORTCUTS
+
+document.addEventListener("keyup", function(event) {
+    console.log(event)
+    switch (event.key) {
+        case "1":
+            document.getElementById('pencil-color-0').click()
+            break;
+        case "2":
+            document.getElementById('pencil-color-1').click()
+            break;
+        case "3":
+            document.getElementById('pencil-color-2').click()
+            break;
+        case "4":
+            document.getElementById('pencil-color-3').click()
+            break;
+        case "5":
+            document.getElementById('pencil-color-4').click()
+            break;
+        case "6":
+            document.getElementById('pencil-color-5').click()
+            break;
+        case "q":
+            console.log("Pressed 2")
+            break;
+        case "w":
+            console.log("Pressed 2")
+            break;
+        case "e":
+            console.log("Pressed 2")
+            break;
+        case "r":
+            console.log("Pressed 2")
+            break;
+        case "a":
+            console.log("Pressed 2")
+            break;
+        case "s":
+            console.log("Pressed 2")
+            break;
+        case "d":
+            console.log("Pressed 2")
+            break;
+        case "f":
+            console.log("Pressed 2")
+            break;
+        case "z":
+            console.log("Pressed 2")
+            break;
+        case "x":
+            console.log("Pressed 2")
+            break;
+        case "c":
+            console.log("Pressed 2")
+            break;
+        case "v":
+            console.log("Pressed 2")
+            break;
+        case "`":
+            console.log("Pressed 2")
+            break;
+        case "Tab":
+            console.log("Pressed 2")
+            break;
+        default:
+            console.log(`Pressed ${event}`)
+    }
 });
 
