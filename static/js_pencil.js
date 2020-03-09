@@ -297,16 +297,44 @@ document.addEventListener("keyup", function(event) {
             document.getElementById('pencil-color-5').click()
             break;
         case "q":
-            console.log("Pressed 2")
+            document.getElementById('myRange').value = 2;
+            document.getElementById('myRange').dispatchEvent(
+                new Event('input', {
+                bubbles: true,
+                cancelable: true,
+            }));
             break;
         case "w":
-            console.log("Pressed 2")
+            document.getElementById('myRange').value = 4;
+            document.getElementById('myRange').dispatchEvent(
+                new Event('input', {
+                bubbles: true,
+                cancelable: true,
+            }));
             break;
         case "e":
-            console.log("Pressed 2")
+            document.getElementById('myRange').value = 6;
+            document.getElementById('myRange').dispatchEvent(
+                new Event('input', {
+                bubbles: true,
+                cancelable: true,
+            }));
             break;
         case "r":
-            console.log("Pressed 2")
+            document.getElementById('myRange').value = 10;
+            document.getElementById('myRange').dispatchEvent(
+                new Event('input', {
+                bubbles: true,
+                cancelable: true,
+            }));
+            break;
+        case "t":
+            document.getElementById('myRange').value = 20;
+            document.getElementById('myRange').dispatchEvent(
+                new Event('input', {
+                bubbles: true,
+                cancelable: true,
+            }));
             break;
         case "a":
             console.log("Pressed 2")
