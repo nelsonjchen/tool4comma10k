@@ -337,16 +337,36 @@ document.addEventListener("keyup", function(event) {
             }));
             break;
         case "a":
-            console.log("Pressed 2")
+            document.getElementById('myRangeOpacity').value = 1;
+            document.getElementById('myRangeOpacity').dispatchEvent(
+                new Event('input', {
+                bubbles: true,
+                cancelable: true,
+            }));
             break;
         case "s":
-            console.log("Pressed 2")
+            document.getElementById('myRangeOpacity').value = 2;
+            document.getElementById('myRangeOpacity').dispatchEvent(
+                new Event('input', {
+                bubbles: true,
+                cancelable: true,
+            }));
             break;
         case "d":
-            console.log("Pressed 2")
+            document.getElementById('myRangeOpacity').value = 5;
+            document.getElementById('myRangeOpacity').dispatchEvent(
+                new Event('input', {
+                bubbles: true,
+                cancelable: true,
+            }));
             break;
         case "f":
-            console.log("Pressed 2")
+            document.getElementById('myRangeOpacity').value = 7;
+            document.getElementById('myRangeOpacity').dispatchEvent(
+                new Event('input', {
+                bubbles: true,
+                cancelable: true,
+            }));
             break;
         case "z":
             console.log("Pressed 2")
