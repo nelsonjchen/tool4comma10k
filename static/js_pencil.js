@@ -369,16 +369,36 @@ document.addEventListener("keyup", function(event) {
             }));
             break;
         case "z":
-            console.log("Pressed 2")
+            document.getElementById('myRangeZoom').value = 0.00;
+            document.getElementById('myRangeZoom').dispatchEvent(
+                new Event('input', {
+                bubbles: true,
+                cancelable: true,
+            }));
             break;
         case "x":
-            console.log("Pressed 2")
+            document.getElementById('myRangeZoom').value = 1.25;
+            document.getElementById('myRangeZoom').dispatchEvent(
+                new Event('input', {
+                bubbles: true,
+                cancelable: true,
+            }));
             break;
         case "c":
-            console.log("Pressed 2")
+            document.getElementById('myRangeZoom').value = 2.00;
+            document.getElementById('myRangeZoom').dispatchEvent(
+                new Event('input', {
+                bubbles: true,
+                cancelable: true,
+            }));
             break;
         case "v":
-            console.log("Pressed 2")
+            document.getElementById('myRangeZoom').value = 2.50;
+            document.getElementById('myRangeZoom').dispatchEvent(
+                new Event('input', {
+                bubbles: true,
+                cancelable: true,
+            }));
             break;
         case "`":
             console.log("Pressed 2")
