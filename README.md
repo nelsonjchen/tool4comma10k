@@ -36,7 +36,9 @@ This is a bit Windows-centric for now.
     4. Work Work Work for each image number in question.    
         1. Press Save to Disk
         1. And then press Commit in the bottom right when mask is good.
-    5. Stop Server in GUI
+    5. Stop Server in GUI 
+        * You may want to open another instance of the tool purely for Git/non-server stuff. 
+            * This might not be possible on Mac. Just Duplicate the tool folder I guess.
     6. Once ready to submit your batch of changes, Run `Create and Push Branch`
     7. Click the URL to fill out and make your pull request.
 
