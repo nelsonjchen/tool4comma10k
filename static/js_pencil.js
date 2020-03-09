@@ -401,13 +401,12 @@ document.addEventListener("keyup", function(event) {
             }));
             break;
         case "`":
-            console.log("Pressed 2")
+            document.getElementById('load').click()
             break;
         case "Tab":
-            console.log("Pressed 2")
+            document.getElementById('undo').click()
             break;
         default:
             console.log(`Pressed ${event}`)
     }
 });
-
