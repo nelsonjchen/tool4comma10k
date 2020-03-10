@@ -51,7 +51,11 @@ def create_push_pr_able_branch(repo_path: Path):
     mask_branch.checkout()
     origin_remote = repo.remotes['origin']
     repo.git.push("--set-upstream", origin_remote, repo.head.ref, force=True)
-    github_user = urlparse(repo.remotes['origin'].url).path.split('/')[1]
+    origin_url = repo.remotes['origin'].url
+    if '@' in origin_url:
+        github_user = origin_url.split('/')[0].split(':')[1]
+    else:
+        github_user = urlparse(origin_url).path.split('/')[1]
     pull_request_url = \
         f"https://github.com/commaai/comma10k/compare/master...{github_user}:{branch_name}?expand=1"
     print(f"* Branch made and pushed! Create Pull Request URL: {pull_request_url}")
