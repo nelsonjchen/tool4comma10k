@@ -424,7 +424,7 @@ document.addEventListener("keyup", function (event) {
         case "`":
             document.getElementById('load').click()
             break;
-        case "Tab":
+        case "u":
             document.getElementById('undo').click()
             break;
         default:
