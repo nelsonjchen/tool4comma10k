@@ -264,7 +264,11 @@ $(document).on('input', '#myRange', function () {
     // console.log(currentSize);
     $("#brush-size").html(currentSize);
     $(".color-pencil").each(function (index) {
-        $(this).css({"width": currentSize * window.devicePixelRatio, "height": currentSize * window.devicePixelRatio, "border-radius": (currentSize * devicePixelRatio)/ 2});
+        $(this).css({
+            "width": currentSize * window.devicePixelRatio,
+            "height": currentSize * window.devicePixelRatio,
+            "border-radius": (currentSize * devicePixelRatio) / 2
+        });
     });
 });
 
