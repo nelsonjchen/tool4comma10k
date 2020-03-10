@@ -64,7 +64,7 @@ function mousedown(canvas, evt) {
         pxBrush.draw({
             from: currentPosition,
             to: currentPosition,
-            size: currentSize,
+            size: currentSize * window.devicePixelRatio,
             color: classes[curClass].color,
         });
         console.log("Reset Command Buffer");
@@ -91,7 +91,7 @@ function mousedown(canvas, evt) {
                 }],
                 className: curClass,
                 color: classes[curClass].color,
-                size: currentSize
+                size: currentSize * window.devicePixelRatio
             }
         );
     }
@@ -112,7 +112,7 @@ function mousemove(canvas, evt) {
         pxBrush.draw({
             from: lastPosition,
             to: currentPosition,
-            size: currentSize,
+            size: currentSize * window.devicePixelRatio,
             color: classes[curClass].color,
         });
         curDrawCommands.push(
@@ -137,7 +137,7 @@ function mouseup() {
                 draw_commands: curDrawCommands,
                 className: curClass,
                 color: classes[curClass].color,
-                size: currentSize
+                size: currentSize * window.devicePixelRatio
             }
         );
         drawAllPaths();
@@ -264,7 +264,7 @@ $(document).on('input', '#myRange', function () {
     // console.log(currentSize);
     $("#brush-size").html(currentSize);
     $(".color-pencil").each(function (index) {
-        $(this).css({"width": currentSize, "height": currentSize, "border-radius": currentSize / 2});
+        $(this).css({"width": currentSize * window.devicePixelRatio, "height": currentSize * window.devicePixelRatio, "border-radius": (currentSize * devicePixelRatio)/ 2});
     });
 });
 
