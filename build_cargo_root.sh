@@ -1,0 +1,1 @@
+cargo install --root cargo_root -- oxipng
