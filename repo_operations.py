@@ -10,6 +10,21 @@ from git import Repo
 def fetch_reset_new_branch_upstream(repo_path: Path):
     print("* Starting to fetch from Comma Repo")
     repo = Repo(repo_path)
+
+    # For people using Windows who use Git on Windows and WSL.
+    with open(str(repo_path / 'README.md'), 'rb') as readme_file:
+        if b'\r\n' in readme_file:
+            perform_normalize_to_lf = True
+        else:
+            perform_normalize_to_lf = False
+    if perform_normalize_to_lf:
+        print("CRLF line ending repository detected, normalizing to LF line ending.")
+        with repo.config_writer() as config_writer:
+            config_writer.set_value('core', 'autocrlf', 'false')
+        repo.git.rm('--cached', '-r', '.')
+        repo.git.reset('--hard')
+        print("Finished Normalizing to LF line ending.")
+
     # Force upstream to be comma10k repo
     if 'upstream' not in repo.remotes:
         repo.create_remote('upstream', 'https://github.com/commaai/comma10k')

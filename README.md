@@ -30,6 +30,8 @@ This is a bit Windows-centric for now.
     your Documents folder but this can be changed on every run, though not persistently.     
 5. Workflow Loop
     1. Run `Reset Current To Upstream`
+        * This will set the repository to `core.autocrlf=False` and re-checkout files to normalize the repository
+          to LF line endings. This only happens once if needed and is for users who use Git for Windows AND WSL.
     2. Run `Run Editor Server`
         * This will run forever until stopped
     3. Visit http://localhost:5000     
