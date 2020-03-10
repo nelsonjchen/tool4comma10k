@@ -195,7 +195,23 @@ $('#undo').click(() => {
 $("#download").click((evt) => {
     window.requestAnimationFrame(drawAllPaths);
     console.log("Generating download");
-    const image = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+    let dataURL;
+    if (window.devicePixelRatio === 1) {
+        dataURL = canvas.toDataURL('image/png')
+    } else {
+        let targetCanvas = document.createElement('canvas');
+        targetCanvas.width = 1164;
+        targetCanvas.height = 874;
+        let targetCanvas_ctx = targetCanvas.getContext('2d')
+        targetCanvas_ctx.imageSmoothingEnabled = false;
+        targetCanvas_ctx.drawImage(canvas,
+            0, 0, canvas.width, canvas.height,
+            0, 0, targetCanvas.width, targetCanvas.height
+        );
+        dataURL = targetCanvas.toDataURL('image/png')
+    }
+
+    const image = dataURL.replace("image/png", "image/octet-stream");;
     const link = document.createElement('a');
     link.download = img_name;
     link.href = image;
