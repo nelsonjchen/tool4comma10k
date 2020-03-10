@@ -78,7 +78,11 @@ function mousedown(canvas, evt) {
     } else if (mode === 'fill') {
         let currentPosition = getMousePos(canvas, evt, curZoom);
         ctx.fillStyle = classes[curClass].color;
-        ctx.fillFlood(currentPosition.x, currentPosition.y, 10);
+        ctx.fillFlood(
+            currentPosition.x * window.devicePixelRatio,
+            currentPosition.y * window.devicePixelRatio,
+            10
+        );
         globalPaths.push(
             {
                 draw_commands: [{
@@ -164,7 +168,11 @@ function drawAllPaths() {
                     break;
                 case 'fill':
                     ctx.fillStyle = classes[curClass].color;
-                    ctx.fillFlood(draw_command.position.x, draw_command.position.y, 10);
+                    ctx.fillFlood(
+                        draw_command.position.x * window.devicePixelRatio,
+                        draw_command.position.y * window.devicePixelRatio,
+                        10
+                    );
                     break;
             }
 
@@ -201,6 +209,7 @@ $("#download").click((evt) => {
     link.download = img_name;
     link.href = image;
     link.click();
+    window.requestAnimationFrame(drawAllPaths);
 });
 
 $("#save_to_disk").click((evt) => {
@@ -210,6 +219,7 @@ $("#save_to_disk").click((evt) => {
 
     $.post('/masks/' + img_name, {image: image}).done(function (data) {
     });
+    window.requestAnimationFrame(drawAllPaths);
 });
 
 function generateDataURL() {
