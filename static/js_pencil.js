@@ -64,7 +64,7 @@ function mousedown(canvas, evt) {
         pxBrush.draw({
             from: currentPosition,
             to: currentPosition,
-            size: currentSize,
+            size: currentSize * window.devicePixelRatio,
             color: classes[curClass].color,
         });
         console.log("Reset Command Buffer");
@@ -78,7 +78,11 @@ function mousedown(canvas, evt) {
     } else if (mode === 'fill') {
         let currentPosition = getMousePos(canvas, evt, curZoom);
         ctx.fillStyle = classes[curClass].color;
-        ctx.fillFlood(currentPosition.x, currentPosition.y, 10);
+        ctx.fillFlood(
+            currentPosition.x * window.devicePixelRatio,
+            currentPosition.y * window.devicePixelRatio,
+            10
+        );
         globalPaths.push(
             {
                 draw_commands: [{
@@ -87,7 +91,7 @@ function mousedown(canvas, evt) {
                 }],
                 className: curClass,
                 color: classes[curClass].color,
-                size: currentSize
+                size: currentSize * window.devicePixelRatio
             }
         );
     }
@@ -108,7 +112,7 @@ function mousemove(canvas, evt) {
         pxBrush.draw({
             from: lastPosition,
             to: currentPosition,
-            size: currentSize,
+            size: currentSize * window.devicePixelRatio,
             color: classes[curClass].color,
         });
         curDrawCommands.push(
@@ -133,7 +137,7 @@ function mouseup() {
                 draw_commands: curDrawCommands,
                 className: curClass,
                 color: classes[curClass].color,
-                size: currentSize
+                size: currentSize * window.devicePixelRatio
             }
         );
         drawAllPaths();
@@ -164,7 +168,11 @@ function drawAllPaths() {
                     break;
                 case 'fill':
                     ctx.fillStyle = classes[curClass].color;
-                    ctx.fillFlood(draw_command.position.x, draw_command.position.y, 10);
+                    ctx.fillFlood(
+                        draw_command.position.x * window.devicePixelRatio,
+                        draw_command.position.y * window.devicePixelRatio,
+                        10
+                    );
                     break;
             }
 
@@ -195,21 +203,45 @@ $('#undo').click(() => {
 $("#download").click((evt) => {
     window.requestAnimationFrame(drawAllPaths);
     console.log("Generating download");
-    const image = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+    const image = generateDataURL().replace("image/png", "image/octet-stream");
+    ;
     const link = document.createElement('a');
     link.download = img_name;
     link.href = image;
     link.click();
+    window.requestAnimationFrame(drawAllPaths);
 });
 
 $("#save_to_disk").click((evt) => {
     window.requestAnimationFrame(drawAllPaths);
-    const image = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+    const image = generateDataURL().replace("image/png", "image/octet-stream");
     const data = new FormData();
 
     $.post('/masks/' + img_name, {image: image}).done(function (data) {
     });
+    window.requestAnimationFrame(drawAllPaths);
 });
+
+function generateDataURL() {
+    let dataURL;
+    if (window.devicePixelRatio === 1) {
+        dataURL = canvas.toDataURL('image/png')
+    } else {
+        let targetCanvas = document.createElement('canvas');
+        targetCanvas.width = 1164;
+        targetCanvas.height = 874;
+        let targetCanvas_ctx = targetCanvas.getContext('2d')
+        targetCanvas_ctx.imageSmoothingEnabled = false;
+        // noinspection JSCheckFunctionSignatures
+        targetCanvas_ctx.drawImage(
+            canvas,
+            0, 0, canvas.width, canvas.height,
+            0, 0, targetCanvas.width, targetCanvas.height
+        );
+        dataURL = targetCanvas.toDataURL('image/png')
+    }
+    return dataURL;
+}
 
 $("#load").click((evt) => {
     overlayImg = new Image();
@@ -232,7 +264,11 @@ $(document).on('input', '#myRange', function () {
     // console.log(currentSize);
     $("#brush-size").html(currentSize);
     $(".color-pencil").each(function (index) {
-        $(this).css({"width": currentSize, "height": currentSize, "border-radius": currentSize / 2});
+        $(this).css({
+            "width": currentSize * window.devicePixelRatio,
+            "height": currentSize * window.devicePixelRatio,
+            "border-radius": (currentSize * devicePixelRatio) / 2
+        });
     });
 });
 
