@@ -50,6 +50,8 @@ This is a bit Windows-centric for now.
     * George tweaked it a bit.
 * https://github.com/kozo002/px-brush
     * Wrote a guide on drawing on canvas without anti-aliasing. And the library. 
+* https://github.com/shssoichiro/oxipng
+    * Nice modern tool for compressing PNGs, especially weighty browser made ones!
 
 [comma10k]: https://github.com/commaai/comma10k
 [pxbrush]: https://github.com/kozo002/px-brush

@@ -5,3 +5,4 @@ dist/
 build/
 __pycache__/
 _version.py
+cargo_root

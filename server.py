@@ -58,8 +58,26 @@ def send_mask(path):
     if request.method == 'POST':
         with urlopen(request.form['image']) as response:
             data = response.read()
-            with open(tool_paths.local_repo_path / 'masks' / path, 'wb') as f:
+            masks_path = tool_paths.local_repo_path / 'masks' / path
+            with open(masks_path, 'wb') as f:
                 f.write(data)
+
+            # Optimize with OxiPNG
+            # noinspection PyBroadException
+            try:
+                if sys.platform == 'win32':
+                    oxipng_exe_name = 'oxipng.exe'
+                else:
+                    oxipng_exe_name = 'oxipng'
+                subprocess.run(
+                    [
+                        str(APPLICATION_PATH / 'cargo_root' / 'bin' / oxipng_exe_name),
+                        str(masks_path)
+                    ],
+                )
+            except Exception:
+                # Oh well
+                pass
         return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
     elif request.method == 'GET':
         return send_from_directory(tool_paths.local_repo_path / 'masks', path)
