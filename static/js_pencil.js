@@ -70,6 +70,7 @@ function mousedown(canvas, evt) {
         console.log("Reset Command Buffer");
         curDrawCommands = [
             {
+                type: 'brush',
                 from: currentPosition,
                 to: currentPosition,
             }
@@ -78,7 +79,17 @@ function mousedown(canvas, evt) {
         let currentPosition = getMousePos(canvas, evt, curZoom);
         ctx.fillStyle = classes[curClass].color;
         ctx.fillFlood(currentPosition.x, currentPosition.y, 10);
-
+        globalPaths.push(
+            {
+                draw_commands: [{
+                    type: 'fill',
+                    position: currentPosition,
+                }],
+                className: curClass,
+                color: classes[curClass].color,
+                size: currentSize
+            }
+        );
     }
 
 
@@ -102,6 +113,7 @@ function mousemove(canvas, evt) {
         });
         curDrawCommands.push(
             {
+                type: 'brush',
                 from: lastPosition,
                 to: currentPosition,
             }
@@ -141,15 +153,24 @@ function drawAllPaths() {
         const size = pathObj.size;
         let draw_count = 0;
         draw_commands.forEach((draw_command) => {
-            pxBrush.draw({
-                from: draw_command.from,
-                to: draw_command.to,
-                size: size,
-                color: color,
-            });
+            switch (draw_command.type) {
+                case 'brush':
+                    pxBrush.draw({
+                        from: draw_command.from,
+                        to: draw_command.to,
+                        size: size,
+                        color: color,
+                    });
+                    break;
+                case 'fill':
+                    ctx.fillStyle = classes[curClass].color;
+                    ctx.fillFlood(draw_command.position.x, draw_command.position.y, 10);
+                    break;
+            }
+
             draw_count += 1;
         });
-        console.log(`Drawn pxBrush ${draw_count} times`);
+        console.log(`Drawn commands ${draw_count} times`);
     });
     currentCanvasState = ctx.getImageData(0, 0, canvas.width, canvas.height);
     console.log(currentCanvasState);
@@ -275,7 +296,7 @@ $('#commit').click(() => {
 
 // KEYBOARD SHORTCUTS
 
-document.addEventListener("keyup", function(event) {
+document.addEventListener("keyup", function (event) {
     console.log(event)
     switch (event.key) {
         case "1":
@@ -300,105 +321,105 @@ document.addEventListener("keyup", function(event) {
             document.getElementById('myRange').value = 2;
             document.getElementById('myRange').dispatchEvent(
                 new Event('input', {
-                bubbles: true,
-                cancelable: true,
-            }));
+                    bubbles: true,
+                    cancelable: true,
+                }));
             break;
         case "w":
             document.getElementById('myRange').value = 4;
             document.getElementById('myRange').dispatchEvent(
                 new Event('input', {
-                bubbles: true,
-                cancelable: true,
-            }));
+                    bubbles: true,
+                    cancelable: true,
+                }));
             break;
         case "e":
             document.getElementById('myRange').value = 6;
             document.getElementById('myRange').dispatchEvent(
                 new Event('input', {
-                bubbles: true,
-                cancelable: true,
-            }));
+                    bubbles: true,
+                    cancelable: true,
+                }));
             break;
         case "r":
             document.getElementById('myRange').value = 10;
             document.getElementById('myRange').dispatchEvent(
                 new Event('input', {
-                bubbles: true,
-                cancelable: true,
-            }));
+                    bubbles: true,
+                    cancelable: true,
+                }));
             break;
         case "t":
             document.getElementById('myRange').value = 20;
             document.getElementById('myRange').dispatchEvent(
                 new Event('input', {
-                bubbles: true,
-                cancelable: true,
-            }));
+                    bubbles: true,
+                    cancelable: true,
+                }));
             break;
         case "a":
             document.getElementById('myRangeOpacity').value = 1;
             document.getElementById('myRangeOpacity').dispatchEvent(
                 new Event('input', {
-                bubbles: true,
-                cancelable: true,
-            }));
+                    bubbles: true,
+                    cancelable: true,
+                }));
             break;
         case "s":
             document.getElementById('myRangeOpacity').value = 2;
             document.getElementById('myRangeOpacity').dispatchEvent(
                 new Event('input', {
-                bubbles: true,
-                cancelable: true,
-            }));
+                    bubbles: true,
+                    cancelable: true,
+                }));
             break;
         case "d":
             document.getElementById('myRangeOpacity').value = 5;
             document.getElementById('myRangeOpacity').dispatchEvent(
                 new Event('input', {
-                bubbles: true,
-                cancelable: true,
-            }));
+                    bubbles: true,
+                    cancelable: true,
+                }));
             break;
         case "f":
             document.getElementById('myRangeOpacity').value = 7;
             document.getElementById('myRangeOpacity').dispatchEvent(
                 new Event('input', {
-                bubbles: true,
-                cancelable: true,
-            }));
+                    bubbles: true,
+                    cancelable: true,
+                }));
             break;
         case "z":
             document.getElementById('myRangeZoom').value = 0.00;
             document.getElementById('myRangeZoom').dispatchEvent(
                 new Event('input', {
-                bubbles: true,
-                cancelable: true,
-            }));
+                    bubbles: true,
+                    cancelable: true,
+                }));
             break;
         case "x":
             document.getElementById('myRangeZoom').value = 1.25;
             document.getElementById('myRangeZoom').dispatchEvent(
                 new Event('input', {
-                bubbles: true,
-                cancelable: true,
-            }));
+                    bubbles: true,
+                    cancelable: true,
+                }));
             break;
         case "c":
             document.getElementById('myRangeZoom').value = 2.00;
             document.getElementById('myRangeZoom').dispatchEvent(
                 new Event('input', {
-                bubbles: true,
-                cancelable: true,
-            }));
+                    bubbles: true,
+                    cancelable: true,
+                }));
             break;
         case "v":
             document.getElementById('myRangeZoom').value = 2.50;
             document.getElementById('myRangeZoom').dispatchEvent(
                 new Event('input', {
-                bubbles: true,
-                cancelable: true,
-            }));
+                    bubbles: true,
+                    cancelable: true,
+                }));
             break;
         case "`":
             document.getElementById('load').click()
