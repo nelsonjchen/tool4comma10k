@@ -19,6 +19,16 @@ jobs:
         with:
           fetch-depth: 0
       - run: git fetch origin +refs/tags/*:refs/tags/*
+      - uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+          override: true
+      - uses: actions-rs/cargo@v1
+        name: Install OxiPNG
+        with:
+          command: install
+          args: --root cargo_root -- oxipng
       - name: Set up Python
         uses: actions/setup-python@v1
         with:

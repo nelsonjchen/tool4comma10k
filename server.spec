@@ -2,6 +2,7 @@
 # Purely for PyCharm to use and get information.
 import os
 import subprocess
+import sys
 
 import gooey
 from PyInstaller.building.api import EXE, PYZ, COLLECT
@@ -30,9 +31,10 @@ a = Analysis(
     pathex=[os.path.abspath(SPECPATH)],
     binaries=[],
     datas=[
-        ('static', 'static'),
-        ('templates', 'templates'),
-        ('config.json', '.'),
+            ('static', 'static'),
+            ('templates', 'templates'),
+            ('cargo_root', 'cargo_root'),
+            ('config.json', '.'),
     ],
     hiddenimports=[
         'pkg_resources.py2_warn'
