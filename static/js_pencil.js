@@ -195,6 +195,24 @@ $('#undo').click(() => {
 $("#download").click((evt) => {
     window.requestAnimationFrame(drawAllPaths);
     console.log("Generating download");
+    const image = generateDataURL().replace("image/png", "image/octet-stream");
+    ;
+    const link = document.createElement('a');
+    link.download = img_name;
+    link.href = image;
+    link.click();
+});
+
+$("#save_to_disk").click((evt) => {
+    window.requestAnimationFrame(drawAllPaths);
+    const image = generateDataURL().replace("image/png", "image/octet-stream");
+    const data = new FormData();
+
+    $.post('/masks/' + img_name, {image: image}).done(function (data) {
+    });
+});
+
+function generateDataURL() {
     let dataURL;
     if (window.devicePixelRatio === 1) {
         dataURL = canvas.toDataURL('image/png')
@@ -204,28 +222,16 @@ $("#download").click((evt) => {
         targetCanvas.height = 874;
         let targetCanvas_ctx = targetCanvas.getContext('2d')
         targetCanvas_ctx.imageSmoothingEnabled = false;
-        targetCanvas_ctx.drawImage(canvas,
+        // noinspection JSCheckFunctionSignatures
+        targetCanvas_ctx.drawImage(
+            canvas,
             0, 0, canvas.width, canvas.height,
             0, 0, targetCanvas.width, targetCanvas.height
         );
         dataURL = targetCanvas.toDataURL('image/png')
     }
-
-    const image = dataURL.replace("image/png", "image/octet-stream");;
-    const link = document.createElement('a');
-    link.download = img_name;
-    link.href = image;
-    link.click();
-});
-
-$("#save_to_disk").click((evt) => {
-    window.requestAnimationFrame(drawAllPaths);
-    const image = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
-    const data = new FormData();
-
-    $.post('/masks/' + img_name, {image: image}).done(function (data) {
-    });
-});
+    return dataURL;
+}
 
 $("#load").click((evt) => {
     overlayImg = new Image();
